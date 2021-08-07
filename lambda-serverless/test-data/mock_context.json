@@ -1,0 +1,125 @@
+{
+  "awsRequestId": "8b7bf96b-ad21-4a72-9408-c4c9ba8dbebe",
+  "requestId": "8b7bf96b-ad21-4a72-9408-c4c9ba8dbebe",
+  "invokedFunctionArn": "d4eeg0pe9lontvoq6ed3",
+  "functionName": "d4eeg0pe9lontvoq6ed3",
+  "functionVersion": "d4e43fhhoqher4f85gup",
+  "memoryLimitInMB": "128",
+  "deadlineMs": 1627420203825,
+  "logGroupName": "ckglmu88mviub5n5fcg3",
+  "token": {
+    "access_token": "t1.9euelZqTk8aTnpnLzpuanMvHioyWx-3rnpWaipCbnM2TjcmWmM2djImOl5Hl9PdYFn53-e8KQnz13fT3GEV7d_nvCkJ89Q.MWK-QqIVE2kQocy9uEn93s0_paUl04mEe_jv797ozdkW88AZ6zeXOw2GvOXPXxsc5sRfqMtwXIHcjp7CQa6xAQ",
+    "expires_in": 41914,
+    "token_type": "Bearer"
+  },
+  "_data": {
+    "httpMethod": "POST",
+    "headers": {
+      "Accept": "*/*",
+      "Accept-Encoding": "gzip, deflate, br",
+      "Content-Length": "24",
+      "Content-Type": "application/json",
+      "Host": "chat-api.arimanov.ru",
+      "Postman-Token": "d6d2c9d4-8aff-4095-bf03-475ef29326ec",
+      "Uber-Trace-Id": "bd5fefc93edca27d:40eae91f5597f59:bd5fefc93edca27d:1",
+      "User-Agent": "PostmanRuntime/7.28.2",
+      "X-Envoy-Expected-Rq-Timeout-Ms": "300000",
+      "X-Envoy-External-Address": "213.24.127.154",
+      "X-Envoy-Original-Path": "/v1/signin",
+      "X-Forwarded-For": "213.24.127.154",
+      "X-Forwarded-Proto": "https",
+      "X-Internal-Runtime": "api-gateway",
+      "X-Internal-Subject-Id": "",
+      "X-Internal-Subject-Type": "anonymous",
+      "X-Real-Remote-Address": "[2a02:6b8:c0e:500:0:f822:0:416]:35672",
+      "X-Request-Id": "379cb138-572d-498e-b9a1-4d4cf113c5d2",
+      "X-Serverless-Certificate-Ids": "{\"chat-api.arimanov.ru\":\"fpqfs5p8kth6vtbaoe5k\"}",
+      "X-Serverless-Gateway-Id": "d5dk3b087fhjcgqevanh",
+      "X-Trace-Id": "77afde00-b278-4fff-8ee8-97643a578b4d"
+    },
+    "url": "/v1/signin?",
+    "params": {},
+    "multiValueParams": {},
+    "pathParams": {},
+    "multiValueHeaders": {
+      "Accept": [
+        "*/*"
+      ],
+      "Accept-Encoding": [
+        "gzip, deflate, br"
+      ],
+      "Content-Length": [
+        "24"
+      ],
+      "Content-Type": [
+        "application/json"
+      ],
+      "Host": [
+        "chat-api.arimanov.ru"
+      ],
+      "Postman-Token": [
+        "d6d2c9d4-8aff-4095-bf03-475ef29326ec"
+      ],
+      "Uber-Trace-Id": [
+        "bd5fefc93edca27d:40eae91f5597f59:bd5fefc93edca27d:1"
+      ],
+      "User-Agent": [
+        "PostmanRuntime/7.28.2"
+      ],
+      "X-Envoy-Expected-Rq-Timeout-Ms": [
+        "300000"
+      ],
+      "X-Envoy-External-Address": [
+        "213.24.127.154"
+      ],
+      "X-Envoy-Original-Path": [
+        "/v1/signin"
+      ],
+      "X-Forwarded-For": [
+        "213.24.127.154"
+      ],
+      "X-Forwarded-Proto": [
+        "https"
+      ],
+      "X-Internal-Runtime": [
+        "api-gateway"
+      ],
+      "X-Internal-Subject-Id": [
+        ""
+      ],
+      "X-Internal-Subject-Type": [
+        "anonymous"
+      ],
+      "X-Real-Remote-Address": [
+        "[2a02:6b8:c0e:500:0:f822:0:416]:35672"
+      ],
+      "X-Request-Id": [
+        "379cb138-572d-498e-b9a1-4d4cf113c5d2"
+      ],
+      "X-Serverless-Certificate-Ids": [
+        "{\"chat-api.arimanov.ru\":\"fpqfs5p8kth6vtbaoe5k\"}"
+      ],
+      "X-Serverless-Gateway-Id": [
+        "d5dk3b087fhjcgqevanh"
+      ],
+      "X-Trace-Id": [
+        "77afde00-b278-4fff-8ee8-97643a578b4d"
+      ]
+    },
+    "queryStringParameters": {},
+    "multiValueQueryStringParameters": {},
+    "requestContext": {
+      "identity": {
+        "sourceIp": "2a02:6b8:c0e:500:0:f822:0:416",
+        "userAgent": "PostmanRuntime/7.28.2"
+      },
+      "httpMethod": "POST",
+      "requestId": "379cb138-572d-498e-b9a1-4d4cf113c5d2",
+      "requestTime": "27/Jul/2021:21:09:59 +0000",
+      "requestTimeEpoch": 1627420199
+    },
+    "body": "{\r\n    \"data\": \"test\"\r\n}",
+    "isBase64Encoded": false,
+    "path": "/v1/signin"
+  }
+}

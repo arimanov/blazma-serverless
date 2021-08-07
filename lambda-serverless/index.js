@@ -1,14 +1,28 @@
 const { Driver, getCredentialsFromEnv, getLogger, TypedData } = require('ydb-sdk');
+const { signIn } = require('./services/signIn');
 
 module.exports.handler = async function (event, context) {
 
-    const logger = getLogger({level: 'debug'});
-    const entryPoint = '';
-    const dbName = '';
+    const logger = getLogger({ level: 'debug' });
+
+    const entryPoint = process.env.ENTRY_POINT;
+    const dbName = process.env.DB_NAME;
 
     const authService = getCredentialsFromEnv(entryPoint, dbName, logger);
 
-    const { path, httpMethod, body } = event;
+    const { path, httpMethod, body, headers } = event;
+
+    let parsedBody;
+
+    try {
+        parsedBody = JSON.parse(body);
+    }
+    catch (e) {
+        return { statusCode: 400, errorMessage: 'Request data is incorrect' };
+    }
+
+
+    console.log(parsedBody);
 
     if (httpMethod === 'POST' && path === '/v1/signin') {
 
@@ -19,24 +33,17 @@ module.exports.handler = async function (event, context) {
             return { statusCode: 503 };
         }
 
-        await driver.tableClient.withSession(async (session) => {
-            const prepLastId = await session.prepareQuery('SELECT id FROM user ORDER BY id DESC LiMIT 1');
-            const { resultSets } = await session.executeQuery(prepLastId);
-            const lastId = (TypedData.createNativeObjects(resultSets[0])[0].id) + 1;
-            const preparedQueryIns = await session.prepareQuery(`INSERT INTO user (id, name) VALUES (${lastId}, 'bobo2')`);
-            try {
-                await session.executeQuery(preparedQueryIns);
-                return { statusCode: 200, body: 'Test' };
-            }
-            catch (e) {
-                logger.fatal('Error! Reason: ', e.message)
-            }
+        try {
+            await signIn(driver, logger, { parsedBody, ip: headers['X-Envoy-External-Address'] });
             await driver.destroy();
-        });
+            return { statusCode: 200, data: { userId: -1 } }
+        }
+        catch (e) {
+            logger.fatal(e);
+            await driver.destroy();
+            return { statusCode: 503, errorMessage: e.message };
+        }
     }
 
-    return {
-        statusCode: 200,
-        body: [event, context],
-    };
+    return { statusCode: 400 };
 };
