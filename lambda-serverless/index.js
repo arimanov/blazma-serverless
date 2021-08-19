@@ -1,5 +1,6 @@
 const { Driver, getCredentialsFromEnv, getLogger, TypedData } = require('ydb-sdk');
 const { signIn } = require('./services/signIn');
+const { IP_HEADER } = require('./constant');
 
 module.exports.handler = async function (event, context) {
 
@@ -34,14 +35,15 @@ module.exports.handler = async function (event, context) {
         }
 
         try {
-            await signIn(driver, logger, { parsedBody, ip: headers['X-Envoy-External-Address'] });
-            await driver.destroy();
-            return { statusCode: 200, data: { userId: -1 } }
+            const newUserId = await signIn(driver, logger, { parsedBody, ip: headers[IP_HEADER] });
+            return { statusCode: 200, data: { userId: newUserId } }
         }
-        catch (e) {
-            logger.fatal(e);
+        catch ({ httpCode, message }) {
+            logger.fatal(message);
+            return { statusCode: httpCode, errorMessage: message };
+        }
+        finally {
             await driver.destroy();
-            return { statusCode: 503, errorMessage: e.message };
         }
     }
 

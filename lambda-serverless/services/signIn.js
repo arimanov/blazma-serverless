@@ -1,34 +1,74 @@
 const { TypedData } = require('ydb-sdk');
-const { currentDateTime } = require('../utils');
-const { MAX_USERNAME_LENGTH } = require('../constant');
+const { currentDateTime, CustomError } = require('../utils');
+const {
+    MAX_USERNAME_LENGTH,
+    errors: { USER_IS_EXIST, INCORRECT_NAME, USER_CREATE_ERROR, USER_CHECK_ERROR, BODY_PARSE_ERROR }
+} = require('../constant');
+
+
+const checkUserExist = async (session, logger, name) => {
+    let existUser;
+    try {
+        const prepExistName = await session.prepareQuery(`SELECT COUNT(*) AS amount FROM user WHERE name = '${name}'`);
+        const { resultSets } = await session.executeQuery(prepExistName);
+        existUser = TypedData.createNativeObjects(resultSets[0])[0].amount;
+    }
+    catch (e) {
+        logger.fatal(e);
+        throw new CustomError(USER_CHECK_ERROR);
+    }
+    if (existUser > 0) {
+        throw new CustomError(USER_IS_EXIST);
+    }
+};
+
+const getLastUserId = async (session, logger) => {
+    let id;
+    try {
+        const prepLastId = await session.prepareQuery('SELECT id FROM user ORDER BY id DESC LiMIT 1');
+        const { resultSets } = await session.executeQuery(prepLastId);
+        id = (TypedData.createNativeObjects(resultSets[0])[0].id) + 1;
+    }
+    catch (e) {
+        logger.fatal(e);
+        throw new CustomError(USER_CHECK_ERROR);
+    }
+    return id;
+};
+
+const createNewUser = async (session, logger, name, lastId, ip) => {
+
+    const query = `INSERT INTO user (id, name, last_ip, created_at) VALUES (${lastId}, '${name}', '${ip}', Datetime("${currentDateTime()}"))`;
+
+    try {
+        const preparedQueryIns = await session.prepareQuery(query);
+        await session.executeQuery(preparedQueryIns);
+    }
+    catch (e) {
+        logger.fatal(e);
+        throw new CustomError(USER_CREATE_ERROR);
+    }
+};
 
 module.exports.signIn = async (driver, logger, data) => {
 
     const { parsedBody, ip } = data;
-
     const { name } = parsedBody;
 
     if (!name || name.length > MAX_USERNAME_LENGTH) {
-        throw new Error(`Username is incorrect`);
+        throw new CustomError(INCORRECT_NAME);
     }
-    console.log(name);
+
+    let lastFreeId;
 
     await driver.tableClient.withSession(async (session) => {
 
-        //TODO: check user name
-        const prepExistName = await session.prepareQuery(`SELECT COUNT(*) FROM user WHERE name = '${name}'`);
+        await checkUserExist(session, logger, name);
 
-        const prepLastId = await session.prepareQuery('SELECT id FROM user ORDER BY id DESC LiMIT 1');
-        const { resultSets } = await session.executeQuery(prepLastId);
-        const lastId = (TypedData.createNativeObjects(resultSets[0])[0].id) + 1;
+        lastFreeId = await getLastUserId(session, logger);
 
-        const query = `INSERT INTO user (id, name, last_ip, created_at) VALUES (${lastId}, '${name}', '${ip}', Datetime("${currentDateTime()}"))`;
-        const preparedQueryIns = await session.prepareQuery(query);
-        try {
-            //await session.executeQuery(preparedQueryIns);
-        }
-        catch (e) {
-            throw new Error(`Error! Reason: ${e.message}`);
-        }
+        await createNewUser(session, logger, name, lastFreeId, ip);
     });
+
+    return lastFreeId;
 }
