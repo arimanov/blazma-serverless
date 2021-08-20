@@ -1,5 +1,8 @@
 const { TypedData } = require('ydb-sdk');
 const { currentDateTime, CustomError } = require('../utils');
+// noinspection SpellCheckingInspection
+const { v4: uuidv4 } = require('uuid');
+
 const {
     MAX_USERNAME_LENGTH,
     errors: { USER_IS_EXIST, INCORRECT_NAME, USER_CREATE_ERROR, USER_CHECK_ERROR, BODY_PARSE_ERROR }
@@ -36,9 +39,9 @@ const getLastUserId = async (session, logger) => {
     return id;
 };
 
-const createNewUser = async (session, logger, name, lastId, ip) => {
+const createNewUser = async (session, logger, name, lastId, ip, token) => {
 
-    const query = `INSERT INTO user (id, name, last_ip, created_at) VALUES (${lastId}, '${name}', '${ip}', Datetime("${currentDateTime()}"))`;
+    const query = `INSERT INTO user (id, name, last_ip, created_at, token) VALUES (${lastId}, '${name}', '${ip}', Datetime("${currentDateTime()}"), '${token}')`;
 
     try {
         const preparedQueryIns = await session.prepareQuery(query);
@@ -51,6 +54,8 @@ const createNewUser = async (session, logger, name, lastId, ip) => {
 };
 
 module.exports.signIn = async (driver, logger, data) => {
+
+    const token = uuidv4();
 
     const { parsedBody, ip } = data;
     const { name } = parsedBody;
@@ -71,7 +76,7 @@ module.exports.signIn = async (driver, logger, data) => {
 
         lastFreeId = await getLastUserId(session, logger);
 
-        await createNewUser(session, logger, name, lastFreeId, ip);
+        await createNewUser(session, logger, name, lastFreeId, ip, token);
     });
 
     return lastFreeId;

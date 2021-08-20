@@ -36,8 +36,13 @@ module.exports.handler = async function (event, context) {
         }
 
         try {
-            const newUserId = await signIn(driver, logger, { parsedBody, ip: headers[IP_HEADER] });
-            return { statusCode: 200, data: { userId: newUserId } }
+            const userData = await signIn(driver, logger, { parsedBody, ip: headers[IP_HEADER] });
+            console.log('🚍', userData)
+            return {
+                statusCode: 200,
+                body: JSON.stringify(userData),
+                headers: { 'Content-Type': 'application/json' },
+            };
         }
         catch ({ httpCode, message }) {
             logger.fatal(message);
