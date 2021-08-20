@@ -6,7 +6,11 @@ module.exports = {
         return `${d.getFullYear()}-${d.getMonth() + 1}-${d.getDate()}T${d.getHours()}:${d.getMinutes()}:${d.getSeconds()}Z`;
     },
     errResponse: (code, message) => {
-        return { statusCode: code, errorMessage: JSON.stringify({ message }) };
+        return {
+            statusCode: code,
+            body: JSON.stringify({ message }),
+            headers: { 'Content-Type': 'application/json' },
+        };
     },
     CustomError,
 };
