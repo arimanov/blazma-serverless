@@ -79,5 +79,5 @@ module.exports.signIn = async (driver, logger, data) => {
         await createNewUser(session, logger, name, lastFreeId, ip, token);
     });
 
-    return lastFreeId;
+    return { userId: lastFreeId, token };
 }

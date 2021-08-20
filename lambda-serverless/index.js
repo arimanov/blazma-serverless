@@ -23,9 +23,6 @@ module.exports.handler = async function (event, context) {
         return errResponse(400, 'Request data is incorrect');
     }
 
-
-    console.log(parsedBody);
-
     if (httpMethod === 'POST' && path === '/v1/signin') {
 
         const driver = new Driver(entryPoint, dbName, authService);
@@ -37,9 +34,8 @@ module.exports.handler = async function (event, context) {
 
         try {
             const userData = await signIn(driver, logger, { parsedBody, ip: headers[IP_HEADER] });
-            console.log('🚍', userData)
             return {
-                statusCode: 200,
+                statusCode: 201,
                 body: JSON.stringify(userData),
                 headers: { 'Content-Type': 'application/json' },
             };
