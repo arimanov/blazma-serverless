@@ -55,7 +55,11 @@ module.exports.signIn = async (driver, logger, data) => {
     const { parsedBody, ip } = data;
     const { name } = parsedBody;
 
-    if (!name || name.length > MAX_USERNAME_LENGTH) {
+    if (!name) {
+        throw new CustomError(BODY_PARSE_ERROR);
+    }
+
+    if (name.length > MAX_USERNAME_LENGTH) {
         throw new CustomError(INCORRECT_NAME);
     }
 

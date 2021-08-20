@@ -1,6 +1,7 @@
 const { Driver, getCredentialsFromEnv, getLogger, TypedData } = require('ydb-sdk');
 const { signIn } = require('./services/signIn');
 const { IP_HEADER } = require('./constant');
+const { errResponse } = require('./utils')
 
 module.exports.handler = async function (event, context) {
 
@@ -19,7 +20,7 @@ module.exports.handler = async function (event, context) {
         parsedBody = JSON.parse(body);
     }
     catch (e) {
-        return { statusCode: 400, errorMessage: 'Request data is incorrect' };
+        return errResponse(400, 'Request data is incorrect');
     }
 
 
@@ -31,7 +32,7 @@ module.exports.handler = async function (event, context) {
 
         if (!await driver.ready(10000)) {
             logger.fatal(`Driver has not become ready in 10 seconds!`);
-            return { statusCode: 503 };
+            return errResponse(503, 'Database problems, please notify me');
         }
 
         try {
@@ -40,12 +41,12 @@ module.exports.handler = async function (event, context) {
         }
         catch ({ httpCode, message }) {
             logger.fatal(message);
-            return { statusCode: httpCode, errorMessage: message };
+            return errResponse(httpCode, message);
         }
         finally {
             await driver.destroy();
         }
     }
 
-    return { statusCode: 400 };
+    return errResponse(404, 'Unknown endpoint');
 };
