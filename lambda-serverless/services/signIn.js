@@ -53,7 +53,7 @@ const createNewUser = async (session, logger, name, lastId, ip, token) => {
     }
 };
 
-module.exports.signIn = async (driver, logger, data) => {
+module.exports = async (driver, logger, data) => {
 
     const token = uuidv4();
 
@@ -79,5 +79,5 @@ module.exports.signIn = async (driver, logger, data) => {
         await createNewUser(session, logger, name, lastFreeId, ip, token);
     });
 
-    return { userId: lastFreeId, token };
+    return { statusCode: 201, data: { userId: lastFreeId, token } };
 }

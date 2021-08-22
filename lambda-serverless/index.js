@@ -1,7 +1,8 @@
-const { Driver, getCredentialsFromEnv, getLogger, TypedData } = require('ydb-sdk');
-const { signIn } = require('./services/signIn');
+const { getCredentialsFromEnv, getLogger, Driver } = require('ydb-sdk');
 const { IP_HEADER } = require('./constant');
-const { errResponse } = require('./utils')
+const { errResponse } = require('./utils');
+const { errors: { DRIVER_INIT_ERROR, BODY_PARSE_ERROR }, DRIVER_INIT_TIMEOUT, ENDPOINT_NOT_FOUND } = require('./constant');
+const Routes = require('./Routes');
 
 module.exports.handler = async function (event, context) {
 
@@ -20,34 +21,37 @@ module.exports.handler = async function (event, context) {
         parsedBody = JSON.parse(body);
     }
     catch (e) {
-        return errResponse(400, 'Request data is incorrect');
+        return errResponse(BODY_PARSE_ERROR.code, BODY_PARSE_ERROR.message);
     }
 
-    if (httpMethod === 'POST' && path === '/v1/signin') {
+    for (const { method, resource, service } of Routes) {
+        if (httpMethod === method && path === resource) {
 
-        const driver = new Driver(entryPoint, dbName, authService);
+            const driver = new Driver(entryPoint, dbName, authService);
 
-        if (!await driver.ready(10000)) {
-            logger.fatal(`Driver has not become ready in 10 seconds!`);
-            return errResponse(503, 'Database problems, please notify me');
-        }
+            if (!await driver.ready(DRIVER_INIT_TIMEOUT)) {
+                logger.fatal(`Driver has not become ready in 10 seconds!`);
+                return errResponse(DRIVER_INIT_ERROR.code, DRIVER_INIT_ERROR.message);
+            }
 
-        try {
-            const userData = await signIn(driver, logger, { parsedBody, ip: headers[IP_HEADER] });
-            return {
-                statusCode: 201,
-                body: JSON.stringify(userData),
-                headers: { 'Content-Type': 'application/json' },
-            };
-        }
-        catch ({ httpCode, message }) {
-            logger.fatal(message);
-            return errResponse(httpCode, message);
-        }
-        finally {
-            await driver.destroy();
+            try {
+                const { statusCode, data } = await service(driver, logger, { parsedBody, ip: headers[IP_HEADER] });
+                return {
+                    statusCode: statusCode,
+                    body: JSON.stringify(data),
+                    headers: { 'Content-Type': 'application/json' },
+                };
+            }
+            catch ({ httpCode, message }) {
+                logger.fatal(message);
+                return errResponse(httpCode, message);
+            }
+            finally {
+                await driver.destroy();
+            }
+            break;
         }
     }
 
-    return errResponse(404, 'Unknown endpoint');
+    return errResponse(ENDPOINT_NOT_FOUND.code, ENDPOINT_NOT_FOUND.message);
 };
