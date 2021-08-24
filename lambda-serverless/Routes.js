@@ -1,4 +1,5 @@
 const signIn = require('./services/signIn');
+const signOut = require('./services/signOut')
 
 module.exports = [
     {
@@ -9,5 +10,6 @@ module.exports = [
     {
         method: 'POST',
         resource: '/v1/signout',
+        service: (driver, logger, data) => signOut(driver, logger, data),
     }
 ];

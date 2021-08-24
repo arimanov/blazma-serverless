@@ -10,5 +10,7 @@ module.exports = {
     BODY_PARSE_ERROR: { code: 400, message: 'Request body is incorrect' },
     DRIVER_INIT_ERROR: { code: 503, message: 'Database problems, please notify me' },
     ENDPOINT_NOT_FOUND: { code: 404, message: 'Unknown endpoint' },
+    USER_NOT_FOUND: { code: 404, message: 'User not found' },
+    USER_UPDATE_ERROR: { code: 500, message: 'Server Error on user updating operation' },
   }
 };

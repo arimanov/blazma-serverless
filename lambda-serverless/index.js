@@ -25,7 +25,7 @@ module.exports.handler = async function (event, context) {
     }
 
     for (const { method, resource, service } of Routes) {
-        if (httpMethod === method && path === resource) {
+        if (httpMethod === method && path.toLowerCase() === resource) {
 
             const driver = new Driver(entryPoint, dbName, authService);
 
