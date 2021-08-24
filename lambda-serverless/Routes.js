@@ -11,5 +11,17 @@ module.exports = [
         method: 'POST',
         resource: '/v1/signout',
         service: (driver, logger, data) => signOut(driver, logger, data),
+    },
+    {
+        method: 'POST',
+        resource: '/v1/messages',
+    },
+    {
+        method: 'GET',
+        resource: '/v1/messages',
+    },
+    {
+        method: 'GET',
+        resource: '/v1/status',
     }
 ];
