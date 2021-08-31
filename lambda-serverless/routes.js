@@ -1,5 +1,6 @@
 const signIn = require('./services/signIn');
 const signOut = require('./services/signOut')
+const addMessage = require('./services/addMessage');
 
 module.exports = [
     {
@@ -15,6 +16,7 @@ module.exports = [
     {
         method: 'POST',
         resource: '/v1/messages',
+        service: (driver, logger, data) => addMessage(driver, logger, data),
     },
     {
         method: 'GET',

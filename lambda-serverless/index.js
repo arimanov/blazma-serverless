@@ -2,7 +2,7 @@ const { getCredentialsFromEnv, getLogger, Driver } = require('ydb-sdk');
 const { IP_HEADER } = require('./constant');
 const { errResponse } = require('./utils');
 const { errors: { DRIVER_INIT_ERROR, BODY_PARSE_ERROR }, DRIVER_INIT_TIMEOUT, ENDPOINT_NOT_FOUND } = require('./constant');
-const Routes = require('./Routes');
+const Routes = require('./routes');
 
 module.exports.handler = async function (event, context) {
 

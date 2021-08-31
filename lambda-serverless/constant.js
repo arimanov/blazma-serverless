@@ -12,5 +12,7 @@ module.exports = {
     ENDPOINT_NOT_FOUND: { code: 404, message: 'Unknown endpoint' },
     USER_NOT_FOUND: { code: 404, message: 'User not found' },
     USER_UPDATE_ERROR: { code: 500, message: 'Server Error on user updating operation' },
+    MESSAGE_LENGTH_ERROR: { code: 400, message: 'Message length have to be more then 0 chars and less then 128' },
+    MESSAGE_ADD_ERROR: { code: 500, message: 'Server Error on user message posting operation' },
   }
 };
