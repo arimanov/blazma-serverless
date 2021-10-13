@@ -1,6 +1,7 @@
 const signIn = require('./services/signIn');
 const signOut = require('./services/signOut')
 const addMessage = require('./services/addMessage');
+const getMessage = require('./services/getMessage');
 
 module.exports = [
     {
@@ -21,9 +22,10 @@ module.exports = [
     {
         method: 'GET',
         resource: '/v1/messages',
+        service: (driver, logger, data) => getMessage(driver, logger, data),
     },
     {
         method: 'GET',
         resource: '/v1/status',
-    }
+    },
 ];

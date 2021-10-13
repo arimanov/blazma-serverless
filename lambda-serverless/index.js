@@ -13,7 +13,7 @@ module.exports.handler = async function (event, context) {
 
     const authService = getCredentialsFromEnv(entryPoint, dbName, logger);
 
-    const { path, httpMethod, body, headers } = event;
+    const { path, httpMethod, body, queryStringParameters, headers } = event;
 
     let parsedBody;
 
@@ -35,7 +35,9 @@ module.exports.handler = async function (event, context) {
             }
 
             try {
-                const { statusCode, data } = await service(driver, logger, { parsedBody, ip: headers[IP_HEADER] });
+                const { statusCode, data } = await service(driver, logger, {
+                    parsedBody, ip: headers[IP_HEADER], queryParameters: queryStringParameters
+                });
                 return {
                     statusCode: statusCode,
                     body: JSON.stringify(data),
