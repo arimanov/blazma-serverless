@@ -2,6 +2,7 @@ const signIn = require('./services/signIn');
 const signOut = require('./services/signOut')
 const addMessage = require('./services/addMessage');
 const getMessage = require('./services/getMessage');
+const getStatus = require('./services/getStatus');
 
 module.exports = [
     {
@@ -27,5 +28,6 @@ module.exports = [
     {
         method: 'GET',
         resource: '/v1/status',
+        service: (driver, logger,) => getStatus(driver, logger),
     },
 ];

@@ -17,5 +17,6 @@ module.exports = {
     MESSAGE_ADD_ERROR: { code: 500, message: 'Server Error on user message posting operation' },
     MESSAGE_READ_ERROR: { code: 500, message: 'Server Error on user message reading operation' },
     MESSAGE_NOT_FOUND: { code: 404, message: 'Message not found' },
+    GET_USER_NUMBER_ERROR: { code: 503, message: 'Problem on user number count' },
   }
 };
