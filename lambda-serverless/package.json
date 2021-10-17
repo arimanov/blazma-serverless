@@ -4,6 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
+    "dist": "node makeDistrib",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "",
@@ -11,5 +12,8 @@
   "dependencies": {
     "uuid": "^8.3.2",
     "ydb-sdk": "^2.3.0"
+  },
+  "devDependencies": {
+    "archiver": "^5.3.0"
   }
 }
