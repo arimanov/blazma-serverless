@@ -10,7 +10,6 @@ const readMessages = async (session, logger) => {
         const prepareQuery = await session.prepareQuery(query);
         const { resultSets } = await session.executeQuery(prepareQuery);
         messages = TypedData.createNativeObjects(resultSets[0]);
-
     }
     catch (e) {
         logger.fatal(e);
@@ -21,7 +20,8 @@ const readMessages = async (session, logger) => {
 
 const messageFilter = async (messages, lastReadMessageId) => {
 
-    const lastMessageIndex = messages.reduce((lastInd, message, i) => message.id === lastReadMessageId ? i : lastInd);
+    const lastMessageIndex = messages.reduce((lastInd, message, i) =>
+        message.id === lastReadMessageId ? i : lastInd, RESPONSE_MAX_MESSAGES);
 
     return messages.reduce((result, message, i) => {
         if (i < lastMessageIndex) {
@@ -37,7 +37,6 @@ module.exports = async (driver, logger, data) => {
 
     await driver.tableClient.withSession(async (session) => {
         const allMessages = await readMessages(session, logger);
-        console.log(allMessages);
         filteredMessage = await messageFilter(allMessages, after)
     });
 
