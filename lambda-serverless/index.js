@@ -18,7 +18,9 @@ module.exports.handler = async function (event, context) {
     let parsedBody;
 
     try {
-        parsedBody = JSON.parse(body);
+        if (httpMethod !== "GET") {
+            parsedBody = JSON.parse(body);
+        }
     }
     catch (e) {
         return errResponse(BODY_PARSE_ERROR.code, BODY_PARSE_ERROR.message);
