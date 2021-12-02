@@ -1,29 +1,16 @@
 import React, { useState } from 'react';
 
 import { StyleSheet, Text, View, Button, Alert, Pressable, ActivityIndicator, SafeAreaView } from 'react-native';
-import axios from "axios";
 import {StatusBar} from "expo-status-bar";
 
 export default () => {
   const [data, setData] = useState('');
   const [isLoading, setIsLoading] = useState(false);
 
-  const getStatus = () => {
-    setIsLoading(true);
-    setData('Загружаем...');
-    axios.get('https://chat-api.arimanov.ru/v1/status').then((response) => {
-      setData(JSON.stringify(response.data));
-    }).catch((err) => {
-      setData('⛔ Ошибка')
-    }).finally(() => {
-      setIsLoading(false);
-    });
-  }
-
   return (
     <SafeAreaView style={styles.container}>
       <Text style={styles.dataTitle}>{data}</Text>
-      <Pressable style={styles.button} onPress={getStatus}>
+      <Pressable style={styles.button} onPress={() => console.log('Test')}>
         {
           isLoading
             ? <ActivityIndicator size="large" style={styles.spin}/>

@@ -10,6 +10,10 @@ import store from './redux/store';
 
 import { screens } from './utils/constants'
 
+import LoginScreen from './screens/LoginScreen';
+import ChatScreen from './screens/ChatScreen';
+import SettingsScreen from './screens/SettingsScreen';
+
 export default function App() {
 
   const Drawer = createDrawerNavigator();
@@ -22,10 +26,14 @@ export default function App() {
   return (
     <Provider store={store}>
       <NavigationContainer>
-        <Drawer.Navigator initialRouteName="Login" drawerContent={ props => Sidebar(props) } screenOptions={ { header: () => <AppHeader/> } }>
-          <Drawer.Screen name={screens.LOGIN.name} component={screens.LOGIN.component} options={loginScreenOptions} />
-          <Drawer.Screen name={screens.CHAT.name} component={screens.CHAT.component} />
-          <Drawer.Screen name={screens.SETTINGS.name} component={screens.SETTINGS.component} />
+        <Drawer.Navigator
+          initialRouteName={screens.LOGIN}
+          drawerContent={ (props) => <Sidebar {...props} /> }
+          screenOptions={ { header: () => <AppHeader/> } }
+        >
+          <Drawer.Screen name={screens.LOGIN} component={LoginScreen} options={loginScreenOptions} />
+          <Drawer.Screen name={screens.CHAT} component={ChatScreen} />
+          <Drawer.Screen name={screens.SETTINGS} component={SettingsScreen} />
         </Drawer.Navigator>
       </NavigationContainer>
     </Provider>

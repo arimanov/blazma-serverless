@@ -1,60 +1,82 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useNavigation } from '@react-navigation/native';
-
-import { LOGIN_REQUEST } from '../redux/reducers';
-
 import { useDispatch, useSelector } from 'react-redux';
-
+import { Ionicons } from '@expo/vector-icons';
 import {
   Keyboard,
-  Pressable,
   SafeAreaView,
   StyleSheet,
   Text,
-  TextInput,
   TouchableWithoutFeedback,
-  Alert,
   View,
-  ActivityIndicator
+  ActivityIndicator,
+  Image,
 } from 'react-native';
 
-import MyButton from '../components/Button';
+import Button from '../components/Button';
+import NotificationCard from '../components/NotificationCard';
+import Input from '../components/Input';
+import {
+  loginErrorSelector,
+  authUserAction,
+  loginStatusSelector,
+  clearLoginErrorAction,
+  connectionStatusSelector,
+  userDataSelector,
+} from '../redux/reducers';
+import { screens } from '../utils/constants';
 
-import { authUser } from '../redux/reducers';
 
 export default () => {
   const navigation = useNavigation();
   const dispatch = useDispatch();
-
-  const errorMessage = useSelector((state) => state.requestStatuses.errorLoginRequest);
-  const isLoading = useSelector((state) => state.requestStatuses.isActiveLoginRequest);
+  const errorMessage = useSelector(loginErrorSelector);
+  const isLoading = useSelector(loginStatusSelector);
+  const connectionStatus = useSelector(connectionStatusSelector);
+  const { userName, userToken } = useSelector(userDataSelector);
 
   const [loginValue, setLoginValue] = useState('');
+
+  useEffect(() => {
+    console.log('🎁', userName, userToken);
+    if (userName && userToken) {
+      console.log('🎃', 'Navigate to chat page');
+      navigation.navigate(screens.CHAT);
+    }
+  }, [userName, userToken]);
+
+  const onPressSubmit = () => {
+    Keyboard.dismiss();
+    dispatch(authUserAction(loginValue));
+  }
 
   return (
     <TouchableWithoutFeedback onPress={Keyboard.dismiss} accessible={false}>
       <SafeAreaView style={styles.container}>
-        <TextInput
-          editable={true}
-          style={styles.input}
-          placeholder="Your name"
-          keyboardType="email-address"
-          onChangeText={setLoginValue}
+        <Image
+          style={styles.logo}
+          source={require('../assets/blazma-logo.png')}
         />
-        <View style={styles.buttonBlock}>
+        <View style={styles.formBlock}>
+          <Input editable={!isLoading} onChange={setLoginValue} placeholder="Your name" />
           {
             isLoading
               ? <ActivityIndicator size="large" style={styles.spin} />
-              : <MyButton
-                  onPress={() => {
-                  dispatch(authUser(loginValue));
-                  //navigation.navigate(screens.CHAT.name);
-                  }}
-                  title={'Join to chat'}
-                />
+              : <Button onPress={onPressSubmit} title={'Join to chat'} />
           }
-
-          <Text style={{ marginTop: 20 }}>Ошибка: {errorMessage}</Text>
+          <View style={styles.separator}/>
+          {
+            errorMessage
+              ? <NotificationCard text={errorMessage} onClose={() => dispatch(clearLoginErrorAction())} />
+              : null
+          }
+        </View>
+        <View style={styles.bottom}>
+          <Text style={styles.secondText}>
+            <Ionicons name="git-branch-outline" size={16} style={styles.secondText} />
+            App version: 0.1
+          </Text>
+          <Text style={styles.secondText}>Server status: { connectionStatus ? '🟢' : '🔴' }</Text>
         </View>
       </SafeAreaView>
     </TouchableWithoutFeedback>
@@ -67,23 +89,34 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: '#F2F6FE',
     alignItems: 'center',
-    justifyContent: 'center',
+    justifyContent: 'space-between',
   },
-  input: {
-    width: '60%',
-    height: 40,
-    borderWidth: 1,
+  logo: {
+    marginTop: 50,
+    height: 200,
+    width: 200,
+  },
+  bottom: {
+    width: '100%',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+    flexDirection: 'row',
     padding: 10,
-    textAlign: 'center',
-    borderRadius: 5,
-    borderColor: '#5D7CF3',
+    color: '#fff',
   },
-  buttonBlock: {
-    width: '60%',
+  formBlock: {
+    flex: 1,
+    width: '70%',
     height: '30%',
-    justifyContent: 'center',
+    paddingTop: 60,
+  },
+  separator: {
+    height: 40,
   },
   spin: {
     marginTop: 10,
+  },
+  secondText: {
+    color: '#4d4d4d'
   }
 });
