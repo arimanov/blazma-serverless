@@ -13,6 +13,7 @@ import { screens } from './utils/constants'
 import LoginScreen from './screens/LoginScreen';
 import ChatScreen from './screens/ChatScreen';
 import SettingsScreen from './screens/SettingsScreen';
+import InfoScreen from './screens/InfoScreen';
 
 export default function App() {
 
@@ -34,6 +35,7 @@ export default function App() {
           <Drawer.Screen name={screens.LOGIN} component={LoginScreen} options={loginScreenOptions} />
           <Drawer.Screen name={screens.CHAT} component={ChatScreen} />
           <Drawer.Screen name={screens.SETTINGS} component={SettingsScreen} />
+          <Drawer.Screen name={screens.INFO} component={InfoScreen} />
         </Drawer.Navigator>
       </NavigationContainer>
     </Provider>

@@ -33,7 +33,7 @@ const styles = StyleSheet.create({
     elevation: 12,
   },
   wrapperPressOut: {
-    backgroundColor: "#5D7CF3",
+    backgroundColor: '#5D7CF3',
     shadowOpacity: 0.25,
   },
   wrapperPressIn: {

@@ -7,7 +7,9 @@ const SIGN_OUT_URL = `${API_URL}/v1/signout`;
 const MESSAGES_URL = `${API_URL}/v1/messages`;
 
 const prepareErrResult = (err) => {
-  return ({ errorMessage: err.response?.data?.message || 'Request error', errorCode: err.response?.status || 0 });
+  return ({
+    errorMessage: err.response?.data?.message || 'Request error', errorCode: err.response?.status || 0
+  });
 };
 
 export const requestUserAuth = async (userName) => {
