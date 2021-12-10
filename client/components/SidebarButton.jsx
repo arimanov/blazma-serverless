@@ -1,7 +1,7 @@
+import React from 'react';
 import PropTypes from 'prop-types';
-import { StyleSheet, Text, View, Alert, Pressable, ActivityIndicator, SafeAreaView } from 'react-native';
+import { StyleSheet, Text, Pressable } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
-import React from "react";
 import { useNavigation } from '@react-navigation/native';
 
 const SidebarButton = ({ icon, text, active, navigateTo }) => {

@@ -38,9 +38,7 @@ export default () => {
   const [loginValue, setLoginValue] = useState('');
 
   useEffect(() => {
-    console.log('🎁', userName, userToken);
     if (userName && userToken) {
-      console.log('🎃', 'Navigate to chat page');
       navigation.navigate(screens.CHAT);
     }
   }, [userName, userToken]);
