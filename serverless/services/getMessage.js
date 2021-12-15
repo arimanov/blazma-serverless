@@ -6,7 +6,8 @@ const { errors: { MESSAGE_READ_ERROR, ACCESS_DENIED, USER_CHECK_ERROR }, RESPONS
 const readMessages = async (session, logger) => {
     let messages;
     try {
-        const query = `SELECT * FROM message ORDER BY created_at DESC LIMIT ${RESPONSE_MAX_MESSAGES}`;
+        const query = `SELECT m.message AS message, m.id AS id, m.created_at AS created_at, u.name as userName
+                        FROM message AS m LEFT JOIN user AS u ON m.user_id = u.id ORDER BY created_at DESC LIMIT ${RESPONSE_MAX_MESSAGES}`
         const prepareQuery = await session.prepareQuery(query);
         const { resultSets } = await session.executeQuery(prepareQuery);
         messages = TypedData.createNativeObjects(resultSets[0]);

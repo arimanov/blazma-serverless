@@ -4,14 +4,14 @@ Mobile chat application
 
 ## Application backend
 ### Common scheme:
-![image info](./img/sheme.png)
+![image info](./img/scheme.png)
 
 ### API
 `GET` `/v1/status` - get server status
 
 <br/>
 
-`GET` `/v1/messages` - get last messages list, if `after` is empty backend returns the number of messages specified in the constant `RESPONSE_MAX_MESSAGES`
+`GET` `/v1/messages?after=...&token=...` - get last messages list, if `after` is empty backend returns the number of messages specified in the constant `RESPONSE_MAX_MESSAGES`
 ```
 ?after=<messageId>
 ```
