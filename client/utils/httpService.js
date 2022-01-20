@@ -30,6 +30,24 @@ export const requestUserLogout = async (userName, userToken) => {
   }
 }
 
+export const requestGetMessages = async (userToken, afterMessageId) => {
+  try {
+    const { data } = await axios.get(MESSAGES_URL, { params: { token: userToken, after: afterMessageId } });
+    return { messages: data };
+  } catch (err) {
+    return prepareErrResult(err)
+  }
+}
+
+export const requestSendMessage = async (userToken, message) => {
+  try {
+    const { data } = await axios.post(MESSAGES_URL, { message, token: userToken } );
+    return { messageInfo: data };
+  } catch (err) {
+    return prepareErrResult(err)
+  }
+}
+
 export const getAPIStatus = async () => {
   try {
     const { data } = await axios.get(STATUS_URL);

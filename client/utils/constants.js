@@ -4,3 +4,5 @@ export const screens = {
   LOGIN: 'LoginScreen',
   INFO: 'InfoScreen',
 }
+
+export const MAX_SHOWING_MESSAGES = 30;
