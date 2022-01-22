@@ -18,6 +18,6 @@ module.exports = {
     MESSAGE_READ_ERROR: { code: 500, message: 'Server Error on user message reading operation' },
     MESSAGE_NOT_FOUND: { code: 404, message: 'Message not found' },
     GET_USER_NUMBER_ERROR: { code: 503, message: 'Problem on user number count' },
-    ACCESS_DENIED: { code: 403, message: 'This user doesn\'t has an access or user is not exist' },
+    ACCESS_DENIED: { code: 403, message: 'This user doesn\'t have an access or user is not exist' },
   }
 };
