@@ -28,6 +28,6 @@ module.exports = [
     {
         method: 'GET',
         resource: '/v1/status',
-        service: (driver, logger,) => getStatus(driver, logger),
+        service: (driver, logger, data) => getStatus(driver, logger, data),
     },
 ];
