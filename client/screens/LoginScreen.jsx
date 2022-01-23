@@ -21,10 +21,12 @@ import {
   authUserAction,
   loginStatusSelector,
   clearLoginErrorAction,
-  connectionStatusSelector,
+  //connectionStatusSelector,
   userDataSelector,
+  statusRequestSelector,
 } from '../redux/reducers';
 import { screens } from '../utils/constants';
+import useAuthData from '../hooks/useAuthData';
 
 
 export default () => {
@@ -32,13 +34,16 @@ export default () => {
   const dispatch = useDispatch();
   const errorMessage = useSelector(loginErrorSelector);
   const isLoading = useSelector(loginStatusSelector);
-  const connectionStatus = useSelector(connectionStatusSelector);
+  const isLoadingStatus = useSelector(statusRequestSelector);
+  //const connectionStatus = useSelector(connectionStatusSelector);
   const { userName, userToken } = useSelector(userDataSelector);
+  const { setUserData } = useAuthData();
 
   const [loginValue, setLoginValue] = useState('');
 
   useEffect(() => {
     if (userName && userToken) {
+      setUserData({ userName, userToken });
       navigation.navigate(screens.CHAT);
     }
   }, [userName, userToken]);
@@ -51,6 +56,9 @@ export default () => {
   return (
     <TouchableWithoutFeedback onPress={Keyboard.dismiss} accessible={false}>
       <SafeAreaView style={styles.container}>
+        {
+          isLoadingStatus ? <View style={styles.loadView}><ActivityIndicator size="large" /></View> : null
+        }
         <Image
           style={styles.logo}
           source={require('../assets/blazma-logo.png')}
@@ -74,7 +82,7 @@ export default () => {
             <Ionicons name="git-branch-outline" size={16} style={styles.secondText} />
             App version: 0.1
           </Text>
-          <Text style={styles.secondText}>Server status: { connectionStatus ? '🟢' : '🔴' }</Text>
+          {/*<Text style={styles.secondText}>Server status: { connectionStatus ? '🟢' : '🔴' }</Text>*/}
         </View>
       </SafeAreaView>
     </TouchableWithoutFeedback>
@@ -89,6 +97,16 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'space-between',
   },
+  loadView: {
+    flex: 1,
+    justifyContent: 'center',
+    backgroundColor: 'rgba(52, 52, 52, 0.9)',
+    width: '100%',
+    position: 'absolute',
+    top: 0,
+    bottom: 0,
+    zIndex: 1,
+  },
   logo: {
     marginTop: 50,
     height: 200,
@@ -97,7 +115,7 @@ const styles = StyleSheet.create({
   bottom: {
     width: '100%',
     alignItems: 'center',
-    justifyContent: 'space-between',
+    justifyContent: 'center',
     flexDirection: 'row',
     padding: 10,
     color: '#fff',

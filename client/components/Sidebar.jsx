@@ -7,6 +7,8 @@ import { Ionicons } from '@expo/vector-icons';
 import { screens } from '../utils/constants';
 import SidebarButton from './SidebarButton';
 import { logoutStatusSelector, logoutUserAction, userDataSelector } from '../redux/reducers';
+import { unsetUserData } from '../hooks/useAuthData';
+
 
 const Sidebar = ({ navigation }) => {
 
@@ -65,7 +67,10 @@ const Sidebar = ({ navigation }) => {
                   pressed ? styles.logoutButtonPressIn : styles.logoutButtonPressOut,
                   styles.logoutButton
                 ]}
-                onPress={() => dispatch(logoutUserAction())}
+                onPress={async () => {
+                  dispatch(logoutUserAction())
+                  await unsetUserData();
+                }}
               >
                 <Ionicons name="exit-outline" size={30} color={'#fff'} style={{ marginLeft: 23 }}/>
               </Pressable>

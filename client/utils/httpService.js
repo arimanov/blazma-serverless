@@ -48,9 +48,9 @@ export const requestSendMessage = async (userToken, message) => {
   }
 }
 
-export const getAPIStatus = async () => {
+export const requestStatus = async (userToken) => {
   try {
-    const { data } = await axios.get(STATUS_URL);
+    const { data } = await axios.get(STATUS_URL, { params: { token: userToken } });
     return data;
   } catch (err) {
     return prepareErrResult(err)
