@@ -1,30 +1,7 @@
-jest.mock('ydb-sdk');
-const { Driver, TypedData, getLogger } = require('ydb-sdk');
+const { initTestGround, stubSQLResult } = require('./testGround');
 const { handler } = require('../index');
 
-['SA_JSON_FILE', 'ENTRY_POINT', 'DB_NAME'].map((v) => process.env[v] = '');
-
-TypedData.createNativeObjects = jest.fn().mockImplementation((d) => d);
-
-getLogger.mockImplementation(() => ({ fatal: (m) => console.log(`⛔️ Logger fatal message: ${m}`) }));
-
-const stubSQLResult = (cases) => {
-    Driver.mockImplementation(() => {
-        return {
-            ready: () => Promise.resolve(true),
-            destroy: () => jest.fn(),
-            tableClient: {
-                withSession: (cb) => cb({
-                    executeQuery: async (query) => {
-                        const dataSuit = cases.find((c) => c.query === query);
-                        return { resultSets: [dataSuit.result] }
-                    },
-                    prepareQuery: (q) => q,
-                })
-            }
-        };
-    });
-};
+initTestGround();
 
 describe('Get status', () => {
 
@@ -40,14 +17,8 @@ describe('Get status', () => {
         //given
         const userToken = '9ecceed9-10fc-4ec0-b0e1-22dbeabb2127'
         stubSQLResult([
-            {
-                query: `SELECT COUNT(*) AS userExist FROM user WHERE token = '${userToken}'`,
-                result: [{ userExist: 1 }]
-            },
-            {
-                query: 'SELECT COUNT(*) as number FROM user WHERE token IS NOT NULL',
-                result: [{ number: 10 }]
-            }
+            { numberOfQuery: 1, result: [{ userExist: 1 }] },
+            { numberOfQuery: 2, result: [{ number: 10 }] }
         ]);
 
         const event = {
@@ -67,10 +38,7 @@ describe('Get status', () => {
         //given
         const userToken = '00000000-0000-0000-0000-000000000000'
         stubSQLResult([
-            {
-                query: `SELECT COUNT(*) AS userExist FROM user WHERE token = '${userToken}'`,
-                result: [{ userExist: 0 }]
-            },
+            { numberOfQuery: 1, result: [{ userExist: 0 }] },
         ]);
         const event = {
             ...testData,
