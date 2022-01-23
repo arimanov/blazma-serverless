@@ -2,39 +2,13 @@ import React, { useState } from 'react';
 
 import { StyleSheet, Text, View, Button, Alert, ActivityIndicator, SafeAreaView, Pressable } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
-import { Audio } from 'expo-av';
 
 export default () => {
-    const [sound, setSound] = React.useState();
-
-    async function playSound() {
-        console.log('Loading Sound');
-        const { sound } = await Audio.Sound.createAsync(
-          require('../assets/auth-sound.mp3')
-        );
-        setSound(sound);
-
-        console.log('Playing Sound');
-        await sound.playAsync(); }
-
-    React.useEffect(() => {
-        return sound
-          ? () => {
-              console.log('Unloading Sound');
-              sound.unloadAsync(); }
-          : undefined;
-    }, [sound]);
-
-    const navigation = useNavigation();
-    const screen = 'LoginScreen';
+    // const navigation = useNavigation();
+    // const screen = 'LoginScreen';
     return (
         <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
             <Text>Settings Screen</Text>
-            <Pressable style={styles.button} onPress={() => navigation.navigate(screen)}>
-                <Text style={styles.text}>Back to login</Text>
-            </Pressable>
-
-            <Button title="💩" onPress={playSound} style={{ marginTop: 40 }}/>
         </View>
     )
 }

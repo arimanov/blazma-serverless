@@ -1,7 +1,9 @@
 import { useEffect, useState } from 'react';
+import { AppState  } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import { useDispatch } from 'react-redux';
 import { fetchMessagesAction } from '../redux/reducers';
+import { MESSAGE_FETCH_INTERVAL_MS } from '../utils/constants';
 
 export default () => {
 
@@ -14,10 +16,10 @@ export default () => {
         if (!isRunning) {
             setIsRunning(true);
             setInterval(() => {
-                if (navigation.getState().index === 1) {
+                if (navigation.getState().index === 1 && AppState.currentState === 'active') {
                     dispatch(fetchMessagesAction());
                 }
-            }, 5000);
+            }, MESSAGE_FETCH_INTERVAL_MS);
         }
     }, []);
 }
