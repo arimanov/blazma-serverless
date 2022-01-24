@@ -1,10 +1,11 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigation } from '@react-navigation/native';
-import { StyleSheet, View, Pressable, Image, SafeAreaView, Button } from 'react-native';
+import { StyleSheet, View, Pressable, Image, SafeAreaView } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
-import Indicator from './Indicator';
 import { useSelector, useDispatch } from 'react-redux';
 import { fetchMessageActiveSelector, messageFetchingEnabledStatus, toggleMessageFetching } from '../redux/reducers';
+import Indicator from './Indicator';
+import colors from '../utils/appColors';
 
 export default () => {
 
@@ -53,9 +54,9 @@ const IsDrawerOpen = (navigation) =>
 
 const styles = StyleSheet.create({
     container: {
-        backgroundColor: '#F7F8FA',
+        backgroundColor: colors.backgroundSecond,
         flexDirection: 'row',
-        shadowColor: "#000",
+        shadowColor: colors.dark,
         shadowOffset: {
             width: 0,
             height: 2,
@@ -78,14 +79,14 @@ const styles = StyleSheet.create({
         borderRadius: 50
     },
     buttonPressedIn: {
-        backgroundColor: '#2F3046FF',
+        backgroundColor: colors.grayGeneral,
     },
     buttonPressedOut: {
-        backgroundColor: '#f1eaea',
+        backgroundColor: colors.blueFifth,
     },
     icon: {
         marginLeft: 8,
-        color: '#5D7CF3',
+        color: colors.blueSecond,
     },
     logoWrapper: {
         width: '60%',
@@ -98,7 +99,4 @@ const styles = StyleSheet.create({
         width: 177,
         height: 27,
     },
-    iconLoad: {
-        color: 'rgba(93,124,243,0.8)',
-    }
 });

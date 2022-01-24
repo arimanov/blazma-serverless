@@ -1,6 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Pressable, Text, StyleSheet, View } from 'react-native';
+import { Pressable, Text, StyleSheet } from 'react-native';
+import colors from '../utils/appColors';
 
 const Button = ({ onPress, title, loading }) => {
   return (
@@ -33,18 +34,18 @@ const styles = StyleSheet.create({
     elevation: 12,
   },
   wrapperPressOut: {
-    backgroundColor: '#5D7CF3',
+    backgroundColor: colors.blueSecond,
     shadowOpacity: 0.25,
   },
   wrapperPressIn: {
-    backgroundColor: "#375cec",
+    backgroundColor: colors.blueGeneral,
     shadowOpacity: 0.6,
   },
   text: {
     letterSpacing: 0.25,
     fontWeight: 'bold',
     fontSize: 16,
-    color: '#fff',
+    color: colors.graySecond,
   }
 });
 

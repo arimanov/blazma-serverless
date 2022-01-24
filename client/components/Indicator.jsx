@@ -14,10 +14,7 @@ const Indicator = ({ actionIsActive, isPressed, togglePress }) => {
 
     useEffect(() => {
         rotation.value = withRepeat(
-            withTiming(360, {
-                duration: 1000,
-                easing: Easing.linear,
-            }),
+            withTiming(360, { duration: 1000, easing: Easing.linear}),
             -1
         );
         return () => cancelAnimation(rotation);

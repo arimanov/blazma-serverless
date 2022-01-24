@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import { StyleSheet, Text, Pressable } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import { useNavigation } from '@react-navigation/native';
+import colors from '../utils/appColors';
 
 const SidebarButton = ({ icon, text, active, navigateTo }) => {
 
@@ -18,9 +19,7 @@ const SidebarButton = ({ icon, text, active, navigateTo }) => {
     return (
         <Pressable
             style={({ pressed }) => [
-                active
-                    ? styles.active
-                    : pressed ? styles.pressedIn : styles.pressedOut,
+                active ? styles.active : pressed ? styles.pressedIn : styles.pressedOut,
                 styles.common
             ]}
             onPress={openScreen}
@@ -44,23 +43,23 @@ const styles = StyleSheet.create({
         marginBottom: 10,
     },
     pressedIn: {
-        backgroundColor: '#f1eaea',
+        backgroundColor: colors.graySecond,
     },
     pressedOut: {
-        backgroundColor: '#fff',
+        backgroundColor: colors.light,
     },
     active: {
-        backgroundColor: '#5D7CF3',
+        backgroundColor: colors.blueSecond,
     },
     text: {
         marginLeft: 10,
         fontWeight: 'bold',
     },
     colorActive: {
-        color: '#F7F8FA',
+        color: colors.graySecond,
     },
     colorInactive: {
-        color: '#2F3046',
+        color: colors.dark,
     }
 });
 

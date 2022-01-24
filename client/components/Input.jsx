@@ -1,6 +1,7 @@
 import React from 'react';
 import { StyleSheet, TextInput } from 'react-native';
 import PropTypes from 'prop-types';
+import colors from '../utils/appColors';
 
 const Input = ({ placeholder, onChange, editable }) => {
   return (
@@ -24,7 +25,7 @@ const styles = StyleSheet.create({
     paddingRight: 5,
     textAlign: 'center',
     borderRadius: 5,
-    borderColor: '#5D7CF3',
+    borderColor: colors.blueSecond,
   }
 });
 
