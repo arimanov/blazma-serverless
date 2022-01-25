@@ -26,7 +26,7 @@ import {
   userDataSelector,
   statusRequestSelector,
 } from '../redux/reducers';
-
+import { APP_VERSION } from '@env';
 
 export default () => {
     const navigation = useNavigation();
@@ -79,7 +79,7 @@ export default () => {
                 <View style={styles.bottom}>
                     <Text style={styles.secondText}>
                         <Ionicons name="git-branch-outline" size={16} style={styles.secondText}/>
-                        App version: 0.1
+                        App version: {APP_VERSION}
                     </Text>
                 </View>
             </SafeAreaView>
