@@ -1,2 +1,6 @@
-.idea
+node_modules
+*.pem
+coverage
+distr.zip
 .DS_Store
+.idea

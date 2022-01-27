@@ -4,7 +4,6 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "mock": "node mockRun",
     "dist": "node makeDistrib",
     "test": "jest",
     "test-coverage": "jest --coverage"
